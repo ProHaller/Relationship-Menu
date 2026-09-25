@@ -3,6 +3,7 @@ import { MenuCategory, MenuItem as MenuItemType, MenuMode, RichTextJSONPart } fr
 import { MenuItem } from './MenuItem';
 import { CategoryHeader } from './CategoryHeader';
 import { IconPlus, IconPlusCircle } from '../icons';
+import { useFillModeKeyboardNav } from './hooks/useFillModeKeyboardNav';
 
 interface MenuContentProps {
   menu: MenuCategory[];
@@ -40,6 +41,7 @@ export function MenuContent({
   autoResizeTextarea
 }: MenuContentProps) {
   const isEditing = mode === 'edit';
+  const nav = useFillModeKeyboardNav({ menu, mode, onIconChange });
 
   return (
     <>
@@ -85,6 +87,11 @@ export function MenuContent({
                   onMoveItemDown={onMoveItemDown}
                   autoResizeTextarea={autoResizeTextarea}
                   itemCount={category.items.length}
+                  isActiveRow={mode === 'fill' && nav.isActive(catIndex, itemIndex)}
+                  rowRef={nav.registerRowRef(catIndex, itemIndex)}
+                  onRowFocus={() => nav.onRowFocus(catIndex, itemIndex)}
+                  onRowMouseEnter={() => nav.onRowMouseEnter(catIndex, itemIndex)}
+                  onRowMouseLeave={() => nav.onRowMouseLeave(catIndex, itemIndex)}
                 />
               ))}
               

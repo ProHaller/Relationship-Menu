@@ -55,9 +55,13 @@ interface IconPickerProps {
   onClose: () => void;
   mode?: 'view' | 'fill' | 'edit';
   parentRef: React.RefObject<HTMLDivElement | null>;
+  // When the picker opens as a side effect of hovering (rather than a click or
+  // keyboard activation), stealing focus into the first option is jarring —
+  // callers that open on hover should pass false.
+  autoFocus?: boolean;
 }
 
-export function IconPicker({ selectedIcon, onSelectIcon, isOpen, onClose, mode = 'edit', parentRef }: IconPickerProps) {
+export function IconPicker({ selectedIcon, onSelectIcon, isOpen, onClose, mode = 'edit', parentRef, autoFocus = true }: IconPickerProps) {
   const pickerRef = useRef<HTMLDivElement>(null);
   const firstOptionRef = useRef<HTMLButtonElement>(null);
   const [openDirection, setOpenDirection] = useState<'up' | 'down'>('down');
@@ -81,10 +85,10 @@ export function IconPicker({ selectedIcon, onSelectIcon, isOpen, onClose, mode =
 
   useEffect(() => {
     // Focus the first option when the picker opens
-    if (isOpen && firstOptionRef.current) {
+    if (isOpen && autoFocus && firstOptionRef.current) {
       firstOptionRef.current.focus();
     }
-  }, [isOpen]);
+  }, [isOpen, autoFocus]);
 
   useEffect(() => {
     // Handle keyboard navigation for the picker

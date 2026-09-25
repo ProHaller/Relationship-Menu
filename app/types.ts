@@ -33,7 +33,10 @@ export type MenuData = {
 };
 
 // Define available menu modes
-export type MenuMode = 'view' | 'fill' | 'edit'; 
+export type MenuMode = 'view' | 'fill' | 'edit';
+
+// Rating values used by the fill-mode icon picker and its keyboard shortcuts
+export type RatingValue = 'must' | 'like' | 'maybe' | 'prefer-not' | 'off-limit' | 'talk' | null;
 
 // Legacy schema types for migrations
 export type LegacyMenuItem_1_2 = {
